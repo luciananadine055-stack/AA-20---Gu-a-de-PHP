@@ -1,0 +1,489 @@
+<?php
+// Configuración básica para evitar errores
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía PHP - Puntos 4 al 8</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            background: #f8fafc;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #4f46e5;
+            color: #4f46e5;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: #4f46e5;
+            color: white;
+        }
+        
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+        
+        .exercise {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .exercise.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-box {
+            background: #f1f5f9;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #4f46e5;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .number-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4f46e5;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .variable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .variable-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .multiplication-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .multiplication-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        .refresh-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        
+        .refresh-btn:hover {
+            background: #3730a3;
+        }
+        
+        .exercise-title {
+            color: #4f46e5;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Guía de PHP - Puntos 4 al 8</h1>
+            <p>Desarrollo integrado de todos los ejercicios de la guía</p>
+        </div>
+        
+        <div class="nav">
+            <div class="nav-buttons">
+                <a href="#" class="nav-btn active" onclick="showExercise(4); return false;">4 - Número Aleatorio</a>
+                <a href="#" class="nav-btn" onclick="showExercise(5); return false;">5 - Tipos de Variables</a>
+                <a href="#" class="nav-btn" onclick="showExercise(6); return false;">6 - Strings</a>
+                <a href="#" class="nav-btn" onclick="showExercise(7); return false;">7 - IF</a>
+                <a href="#" class="nav-btn" onclick="showExercise(8); return false;">8 - Bucles</a>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- PUNTO 4: Número Aleatorio -->
+            <div id="exercise4" class="exercise active">
+                <h2 class="exercise-title">🎯 Punto 4 - Número Aleatorio y Comparación</h2>
+                <div class="result-box">
+                    <?php
+                    // Generar número aleatorio entre 1 y 100
+                    $num = rand(1, 100);
+                    
+                    echo "<div class='number-display'>$num</div>";
+                    
+                    // Determinar si es menor/igual a 50 o mayor
+                    if ($num <= 50) {
+                        echo "<p style='text-align: center; font-size: 1.2rem; color: #10b981;'><strong>El número es menor o igual a 50</strong></p>";
+                    } else {
+                        echo "<p style='text-align: center; font-size: 1.2rem; color: #ef4444;'><strong>El número es mayor a 50</strong></p>";
+                    }
+                    ?>
+                    <div style="text-align: center;">
+                        <button class="refresh-btn" onclick="location.reload()">🔄 Generar Nuevo Número</button>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <strong>Código PHP:</strong><br>
+                    $num = rand(1, 100);<br>
+                    if ($num <= 50) {<br>
+                    &nbsp;&nbsp;echo "El número es menor o igual a 50";<br>
+                    } else {<br>
+                    &nbsp;&nbsp;echo "El número es mayor a 50";<br>
+                    }
+                </div>
+            </div>
+            
+            <!-- PUNTO 5: Tipos de Variables -->
+            <div id="exercise5" class="exercise">
+                <h2 class="exercise-title">📊 Punto 5 - Tipos de Variables</h2>
+                <div class="result-box">
+                    <?php
+                    // Definir variables de diferentes tipos
+                    $integerVar = 42;
+                    $doubleVar = 3.14159;
+                    $stringVar = "¡Hola, Mundo!";
+                    $booleanVar = true;
+                    ?>
+                    
+                    <div class="variable-grid">
+                        <div class="variable-card">
+                            <h3>🔢 Integer</h3>
+                            <div style="font-size: 2rem; color: #4f46e5; margin: 10px 0;"><?php echo $integerVar; ?></div>
+                            <small>Números enteros</small>
+                        </div>
+                        
+                        <div class="variable-card">
+                            <h3>📈 Double</h3>
+                            <div style="font-size: 2rem; color: #10b981; margin: 10px 0;"><?php echo $doubleVar; ?></div>
+                            <small>Números con decimales</small>
+                        </div>
+                        
+                        <div class="variable-card">
+                            <h3>📝 String</h3>
+                            <div style="font-size: 1.5rem; color: #f59e0b; margin: 10px 0;">"<?php echo $stringVar; ?>"</div>
+                            <small>Texto entre comillas</small>
+                        </div>
+                        
+                        <div class="variable-card">
+                            <h3>✅ Boolean</h3>
+                            <div style="font-size: 2rem; color: #ef4444; margin: 10px 0;"><?php echo $booleanVar ? 'true' : 'false'; ?></div>
+                            <small>true o false</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <strong>Código PHP:</strong><br>
+                    $integerVar = 42;<br>
+                    $doubleVar = 3.14159;<br>
+                    $stringVar = "¡Hola, Mundo!";<br>
+                    $booleanVar = true;
+                </div>
+            </div>
+            
+            <!-- PUNTO 6: Variables en Strings -->
+            <div id="exercise6" class="exercise">
+                <h2 class="exercise-title">🔤 Punto 6 - Sustitución en Strings</h2>
+                <div class="result-box">
+                    <?php
+                    // Definir tres variables enteras
+                    $precio = 90;
+                    $cantidad = 5;
+                    $descuento = 15;
+                    ?>
+                    
+                    <h3>Variables definidas:</h3>
+                    <div class="variable-grid">
+                        <div class="variable-card">
+                            <strong>Precio:</strong><br>
+                            $<?php echo $precio; ?>
+                        </div>
+                        <div class="variable-card">
+                            <strong>Cantidad:</strong><br>
+                            <?php echo $cantidad; ?> unidades
+                        </div>
+                        <div class="variable-card">
+                            <strong>Descuento:</strong><br>
+                            <?php echo $descuento; ?>%
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px;">Sustitución en strings:</h3>
+                    <div class="result-box">
+                        <p>📦 <strong>"La computadora tiene un precio de $<?php echo $precio; ?>"</strong></p>
+                        <p>🛒 <strong>"Comprando <?php echo $cantidad; ?> unidades a $<?php echo $precio; ?> cada una"</strong></p>
+                        <p>🎁 <strong>"¡Oferta especial con <?php echo $descuento; ?>% de descuento!"</strong></p>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <strong>Código PHP:</strong><br>
+                    $precio = 90;<br>
+                    $cantidad = 5;<br>
+                    $descuento = 15;<br><br>
+                    echo "La computadora tiene un precio de $$precio";<br>
+                    echo "Comprando $cantidad unidades a $$precio cada una";
+                </div>
+            </div>
+            
+            <!-- PUNTO 7: Estructura IF -->
+            <div id="exercise7" class="exercise">
+                <h2 class="exercise-title">🎲 Punto 7 - Estructura Condicional IF</h2>
+                <div class="result-box">
+                    <?php
+                    // Generar un valor aleatorio entre 1 y 3
+                    $numero = rand(1, 3);
+                    $numeroEnCastellano = "";
+                    
+                    // Estructura condicional if
+                    if ($numero == 1) {
+                        $numeroEnCastellano = "UNO";
+                    }
+                    
+                    if ($numero == 2) {
+                        $numeroEnCastellano = "DOS";
+                    }
+                    
+                    if ($numero == 3) {
+                        $numeroEnCastellano = "TRES";
+                    }
+                    ?>
+                    
+                    <div style="text-align: center;">
+                        <div style="font-size: 4rem; color: #4f46e5; margin: 20px 0;"><?php echo $numero; ?></div>
+                        <div style="font-size: 3rem; color: #10b981; font-weight: bold; margin: 20px 0;"><?php echo $numeroEnCastellano; ?></div>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <button class="refresh-btn" onclick="location.reload()">🎲 Generar Nuevo Número</button>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <strong>Código PHP:</strong><br>
+                    $numero = rand(1, 3);<br>
+                    if ($numero == 1) {<br>
+                    &nbsp;&nbsp;$numeroEnCastellano = "UNO";<br>
+                    }<br>
+                    if ($numero == 2) {<br>
+                    &nbsp;&nbsp;$numeroEnCastellano = "DOS";<br>
+                    }<br>
+                    if ($numero == 3) {<br>
+                    &nbsp;&nbsp;$numeroEnCastellano = "TRES";<br>
+                    }
+                </div>
+            </div>
+            
+            <!-- PUNTO 8: Estructuras Repetitivas -->
+            <div id="exercise8" class="exercise">
+                <h2 class="exercise-title">🔄 Punto 8 - Estructuras Repetitivas</h2>
+                
+                <h3>1. Tabla del 2 con FOR</h3>
+                <div class="table-container">
+                    <table class="multiplication-table">
+                        <?php
+                        for ($f = 2; $f <= 20; $f = $f + 2) {
+                            echo "<tr>";
+                            echo "<td>2 × " . ($f / 2) . "</td>";
+                            echo "<td>=</td>";
+                            echo "<td><strong>$f</strong></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </table>
+                </div>
+                
+                <h3>2. Tabla del 2 con WHILE</h3>
+                <div class="table-container">
+                    <table class="multiplication-table">
+                        <?php
+                        $f = 2;
+                        $contador = 1;
+                        while ($f <= 20) {
+                            echo "<tr>";
+                            echo "<td>2 × $contador</td>";
+                            echo "<td>=</td>";
+                            echo "<td><strong>$f</strong></td>";
+                            echo "</tr>";
+                            $f = $f + 2;
+                            $contador++;
+                        }
+                        ?>
+                    </table>
+                </div>
+                
+                <h3>3. Tabla del 2 con DO/WHILE</h3>
+                <div class="table-container">
+                    <table class="multiplication-table">
+                        <?php
+                        $f = 2;
+                        $contador = 1;
+                        do {
+                            echo "<tr>";
+                            echo "<td>2 × $contador</td>";
+                            echo "<td>=</td>";
+                            echo "<td><strong>$f</strong></td>";
+                            echo "</tr>";
+                            $f = $f + 2;
+                            $contador++;
+                        } while ($f <= 20);
+                        ?>
+                    </table>
+                </div>
+                
+                <div class="code-block">
+                    <strong>Código FOR:</strong><br>
+                    for ($f = 2; $f <= 20; $f = $f + 2) {<br>
+                    &nbsp;&nbsp;echo "2 × " . ($f / 2) . " = $f";<br>
+                    }<br><br>
+                    <strong>Código WHILE:</strong><br>
+                    while ($f <= 20) {<br>
+                    &nbsp;&nbsp;echo "2 × $contador = $f";<br>
+                    &nbsp;&nbsp;$f = $f + 2;<br>
+                    &nbsp;&nbsp;$contador++;<br>
+                    }<br><br>
+                    <strong>Código DO/WHILE:</strong><br>
+                    do {<br>
+                    &nbsp;&nbsp;echo "2 × $contador = $f";<br>
+                    &nbsp;&nbsp;$f = $f + 2;<br>
+                    &nbsp;&nbsp;$contador++;<br>
+                    } while ($f <= 20);
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showExercise(punto) {
+            // Ocultar todos los ejercicios
+            document.querySelectorAll('.exercise').forEach(ex => {
+                ex.classList.remove('active');
+            });
+            
+            // Mostrar el ejercicio seleccionado
+            document.getElementById('exercise' + punto).classList.add('active');
+            
+            // Actualizar botones activos
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
